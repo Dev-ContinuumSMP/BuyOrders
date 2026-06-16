@@ -54,12 +54,14 @@ public class OrdersCommand implements CommandExecutor, TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         
-        if (args.length != 1) return Collections.emptyList();
+        if (args.length != 1) {
+            return Collections.emptyList();
+        }
     
         String typed = args[0].toLowerCase();
     
         return Arrays.stream(Material.values())
-                .filter(m -> m.isItem() && !m.isAir())
+                .filter(Material::isItem)
                 .map(m -> m.name().toLowerCase())
                 .filter(name -> name.startsWith(typed))
                 .limit(30)
