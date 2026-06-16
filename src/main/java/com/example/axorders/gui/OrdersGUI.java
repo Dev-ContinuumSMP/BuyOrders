@@ -173,7 +173,9 @@ public class OrdersGUI implements InventoryHolder {
     }
 
     private ItemStack makeFiller() {
+        ItemStack item = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
         ItemMeta meta = item.getItemMeta();
+        if (meta == null) return item;
         meta.setDisplayName(" ");
         item.setItemMeta(meta);
         return item;
