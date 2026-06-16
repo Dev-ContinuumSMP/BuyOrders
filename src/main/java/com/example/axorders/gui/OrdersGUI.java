@@ -68,7 +68,15 @@ public class OrdersGUI implements InventoryHolder {
         }
 
         ItemStack filler = makeFiller();
-        for (int slot = 45; slot < 54; slot++) inv.setItem(slot, filler);
+        for (int slot = 45; slot < 54; slot++) {
+            if (slot == SLOT_PREVIOUS ||
+                slot == SLOT_SORT ||
+                slot == SLOT_INFO ||
+                slot == SLOT_REFRESH ||
+                slot == SLOT_NEXT) continue;
+        
+            inv.setItem(slot, filler);
+        }
 
         if (page > 0) inv.setItem(SLOT_PREVIOUS, makeControl(Material.ARROW, "&ePrevious Page"));
         inv.setItem(SLOT_SORT, makeControl(Material.HOPPER, "&eSort: &b" + sortLabel(), "&7Click to cycle"));
@@ -82,13 +90,20 @@ public class OrdersGUI implements InventoryHolder {
     }
 
     private ItemStack buildOrderItem(BuyOrder order) {
-        int amount = Math.max(1, Math.min(order.getRemaining(), order.getMaterial().getMaxStackSize()));
-        ItemStack item = order.getItemTemplate();
+        int amount = Math.min(order.getRemaining(), 64);
+        ItemStack item = order.getItemTemplate().clone();
         item.setAmount(amount);
         ItemMeta meta = item.getItemMeta();
+        if (meta == null) return item;
+        
         if (!meta.hasDisplayName()) {
-            meta.setDisplayName(AxOrdersAddon.color("&b" + OrderManager.materialName(order.getMaterial()) + " &8#" + order.getShortId()));
+            meta.setDisplayName(AxOrdersAddon.color(
+                    "&b" + OrderManager.materialName(order.getMaterial()) +
+                    " &8#" + order.getShortId()
+            ));
         }
+
+        item.setItemMeta(meta);
 
         int available = countMatchingItems(order.getItemTemplate());
         int fillAmount = Math.min(available, order.getRemaining());
@@ -132,25 +147,32 @@ public class OrdersGUI implements InventoryHolder {
 
     private int countMatchingItems(ItemStack template) {
         int count = 0;
+    
         for (ItemStack item : player.getInventory().getContents()) {
-            if (item != null && item.isSimilar(template)) count += item.getAmount();
+            if (item != null && ItemMatcher.matchesCustomItem(item, template)) {
+                count += item.getAmount();
+            }
         }
+    
         return count;
     }
 
     private ItemStack makeControl(Material material, String name, String... loreLines) {
         ItemStack item = new ItemStack(material);
         ItemMeta meta = item.getItemMeta();
+        if (meta == null) return item;
+    
         meta.setDisplayName(AxOrdersAddon.color(name));
+    
         List<String> lore = new ArrayList<>();
         for (String line : loreLines) lore.add(AxOrdersAddon.color(line));
+    
         meta.setLore(lore);
         item.setItemMeta(meta);
         return item;
     }
 
     private ItemStack makeFiller() {
-        ItemStack item = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(" ");
         item.setItemMeta(meta);
