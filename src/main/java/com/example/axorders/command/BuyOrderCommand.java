@@ -27,6 +27,7 @@ public class BuyOrderCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        
         if (!(sender instanceof Player player)) {
             sender.sendMessage(plugin.msg("player-only"));
             return true;
@@ -35,50 +36,60 @@ public class BuyOrderCommand implements CommandExecutor, TabCompleter {
             player.sendMessage(plugin.msg("no-permission"));
             return true;
         }
-        boolean handMode = args.length >= 1 && args[0].equalsIgnoreCase("hand");
 
-        if (args.length < 3) {
-            player.sendMessage(AxOrdersAddon.color("&eUsage: /buyorder <material> <amount> <priceEach>"));
-            player.sendMessage(AxOrdersAddon.color("&eCustom items: /buyorder hand <amount> <priceEach>"));
-            return true;
-        }
         if (plugin.getCurrencyManager().getHook() == null) {
             player.sendMessage(plugin.msg("no-currency-hook"));
             return true;
-        }
+        }   
+        
+        boolean handMode = args.length >= 1 && args[0].equalsIgnoreCase("hand");
 
-        ItemStack template;
-        if (handMode) {
-            template = player.getInventory().getItemInMainHand().clone();
-            if (template.getType().isAir()) {
-                player.sendMessage(AxOrdersAddon.color("&cHold the custom item you want to order."));
-                return true;
-            }
-            template.setAmount(1);
-        } else {
-            Material material = OrderManager.parseMaterial(args[0]);
-            if (material == null || material.isAir() || !material.isItem()) {
-                player.sendMessage(plugin.msg("unknown-material", "{material}", args[0]));
-                return true;
-            }
-            template = new ItemStack(material);
-        }
-
-        int amount;
-        try {
-            amount = Integer.parseInt(args[1]);
-            if (amount <= 0) throw new NumberFormatException();
-        } catch (NumberFormatException exception) {
-            player.sendMessage(plugin.msg("invalid-amount"));
+        if (!handMode && args.length < 3) {
+            player.sendMessage(AxOrdersAddon.color("&eUsage: /buyorder <material> <amount> <priceEach>"));
             return true;
         }
 
+        if (handMode && args.length < 3) {
+            player.sendMessage(AxOrdersAddon.color("&eUsage: /buyorder hand <amount> <priceEach>"));
+            return true;
+        }
+            
+
+        ItemStack template;
+        
+        if (handMode) {
+            ItemStack hand = player.getInventory().getItemInMainHand();
+
+            if(hand == null || hand.getType().isAir()) {
+                player.sendMessage(AxOrdersAddon.color("&cHold the custom item you want to order."));
+                return true;
+            }
+
+            template = hand.clone();
+            template.setAmount(1);
+            
+        } else {
+            Material material = OrderManager.parseMaterial(args[0]);
+
+            if(material == null || material.isAir() || !material.isItem()) {
+                player.sendMessage(plugin.msg("unknown-material", "{material}", args[0]));
+                return true;
+            }
+
+            template = new ItemStack(material);
+        }
+
+        int amount;        
         double priceEach;
+        
         try {
+            amount = Integer.parseInt(args[1]);
             priceEach = Double.parseDouble(args[2]);
-            if (priceEach <= 0) throw new NumberFormatException();
-        } catch (NumberFormatException exception) {
-            player.sendMessage(plugin.msg("invalid-price"));
+
+            if (amount <= 0 || priceEach <= 0) throw new NumberFormatException();
+
+        } catch (Exception e) {
+            player.sendMessage(plugin.msg("invalid-amount"));
             return true;
         }
 
@@ -89,40 +100,62 @@ public class BuyOrderCommand implements CommandExecutor, TabCompleter {
         }
 
         double total = amount * priceEach;
+
         if (!plugin.getCurrencyManager().has(player.getUniqueId(), total)) {
-            player.sendMessage(plugin.msg("not-enough-money", "{amount}", plugin.getCurrencyManager().format(total)));
-            return true;
-        }
-        if (!plugin.getCurrencyManager().take(player.getUniqueId(), total)) {
-            player.sendMessage(plugin.msg("not-enough-money", "{amount}", plugin.getCurrencyManager().format(total)));
+            player.sendMessage(plugin.msg("not-enough-money",
+                    "{amount}", plugin.getCurrencyManager().format(total)));
             return true;
         }
 
-        BuyOrder order = new BuyOrder(UUID.randomUUID(), player.getUniqueId(), player.getName(), template,
-                amount, 0, priceEach, System.currentTimeMillis());
+        if (!plugin.getCurrencyManager().take(player.getUniqueId(), total)) {
+            player.sendMessage(plugin.msg("not-enough-money",
+                    "{amount}", plugin.getCurrencyManager().format(total)));
+            return true;
+        }
+
+        BuyOrder order = new BuyOrder(
+                UUID.randomUUID(),
+                player.getUniqueId(),
+                player.getName(),
+                template,
+                amount,
+                0,
+                priceEach,
+                System.currentTimeMillis()
+        );
+
         plugin.getOrderManager().addOrder(order);
+
         player.sendMessage(plugin.msg("order-created",
                 "{amount}", String.valueOf(amount),
                 "{material}", OrderManager.itemName(template),
                 "{price}", plugin.getCurrencyManager().format(priceEach)));
+
         return true;
     }
-
+    
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1) {
             String typed = args[0].toLowerCase();
+            
             List<String> completions = Arrays.stream(Material.values())
                     .filter(material -> material.isItem() && !material.isAir())
                     .map(material -> material.name().toLowerCase())
                     .filter(name -> name.startsWith(typed))
                     .limit(30)
                     .collect(Collectors.toList());
-            if ("hand".startsWith(typed)) completions.add(0, "hand");
+            
+            if ("hand".startsWith(typed)) {
+                completions.add(0, "hand");
+
+            }
+            
             return completions;
         }
         if (args.length == 2) return List.of("<amount>");
         if (args.length == 3) return List.of("<priceEach>");
+        
         return Collections.emptyList();
     }
 }
