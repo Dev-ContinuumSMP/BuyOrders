@@ -22,55 +22,61 @@ public class OrdersGuiListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onInventoryClick(InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player player)) return;
-        InventoryHolder holder = event.getView().getTopInventory().getHolder();
-        if (!(holder instanceof OrdersGUI gui)) return;
-
-        event.setCancelled(true);
+    
+        if (!(event.getView().getTopInventory().getHolder() instanceof OrdersGUI gui)) return;
+    
+        if (event.getClickedInventory() == null) return;
+        if (event.getClickedInventory() != event.getView().getTopInventory()) return;
+    
         int slot = event.getRawSlot();
-        if (slot < 0 || slot >= event.getView().getTopInventory().getSize()) return;
-
+        int topSize = event.getView().getTopInventory().getSize();
+    
+        if (slot < 0 || slot >= topSize) return;
+    
+        event.setCancelled(true);
+    
         if (slot == gui.getSlotPrevious()) {
             gui.previousPage();
             player.openInventory(gui.buildInventory());
             return;
         }
+    
         if (slot == gui.getSlotSort()) {
             gui.cycleSortMode();
             player.openInventory(gui.buildInventory());
             return;
         }
+    
         if (slot == gui.getSlotRefresh()) {
             player.openInventory(gui.buildInventory());
             return;
         }
+    
         if (slot == gui.getSlotNext()) {
             gui.nextPage();
             player.openInventory(gui.buildInventory());
             return;
         }
-
+    
         BuyOrder order = gui.getOrderAtSlot(slot);
         if (order == null) return;
-
+    
         String error = event.isRightClick()
                 ? plugin.getOrderManager().cancelOrder(player, order.getId())
                 : plugin.getOrderManager().fillOrder(player, order.getId());
-
-        if (error != null) player.sendMessage(error);
+    
+        if (error != null) player.sendMessage(AxOrdersAddon.color(error));
         player.openInventory(gui.buildInventory());
     }
-
+    
     @EventHandler(priority = EventPriority.HIGH)
     public void onInventoryDrag(InventoryDragEvent event) {
-        InventoryHolder holder = event.getView().getTopInventory().getHolder();
-        if (!(holder instanceof OrdersGUI)) return;
-
+        if (!(event.getView().getTopInventory().getHolder() instanceof OrdersGUI)) return;
+    
         int topSize = event.getView().getTopInventory().getSize();
-        for (int slot : event.getRawSlots()) {
-            if (slot < topSize) {
-                event.setCancelled(true);
-                return;
-            }
+    
+        if (event.getRawSlots().stream().anyMatch(slot -> slot < topSize)) {
+            event.setCancelled(true);
         }
     }
 }
