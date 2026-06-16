@@ -22,22 +22,35 @@ public class PlayerJoinListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        List<ItemStack> pending = plugin.getOrderManager().getPendingDeliveries(player.getUniqueId());
-        if (pending.isEmpty()) return;
-
-        plugin.getOrderManager().clearPendingDeliveries(player.getUniqueId());
-        List<ItemStack> overflowItems = new ArrayList<>();
-        for (ItemStack item : pending) {
-            Map<Integer, ItemStack> overflow = player.getInventory().addItem(item);
-            overflowItems.addAll(overflow.values());
-        }
-        if (!overflowItems.isEmpty()) {
-            for (ItemStack item : overflowItems) {
-                player.getWorld().dropItemNaturally(player.getLocation(), item);
+    
+        Bukkit.getScheduler().runTask(plugin, () -> {
+    
+            List<ItemStack> pending = plugin.getOrderManager()
+                    .getPendingDeliveries(player.getUniqueId());
+    
+            if (pending == null || pending.isEmpty()) return;
+    
+            boolean overflowed = false;
+    
+            for (ItemStack item : pending) {
+                if (item == null || item.getType().isAir()) continue;
+    
+                Map<Integer, ItemStack> overflow = player.getInventory().addItem(item);
+    
+                if (!overflow.isEmpty()) {
+                    overflowed = true;
+                    for (ItemStack overflowItem : overflow.values()) {
+                        player.getWorld().dropItemNaturally(player.getLocation(), overflowItem);
+                    }
+                }
             }
-            player.sendMessage(AxOrdersAddon.color("&eSome buy-order items were dropped because your inventory was full."));
-        } else {
-            player.sendMessage(AxOrdersAddon.color("&aYour pending buy-order items were delivered."));
-        }
+    
+            plugin.getOrderManager().clearPendingDeliveries(player.getUniqueId());
+    
+            if (overflowed) {
+                player.sendMessage(AxOrdersAddon.color("&eSome buy-order items were dropped because your inventory was full."));
+            } else {
+                player.sendMessage(AxOrdersAddon.color("&aYour pending buy-order items were delivered."));
+            }
+        });
     }
-}
