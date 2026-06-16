@@ -53,7 +53,7 @@ public class CurrencyManager {
         try {
             return hook != null && hook.takeBalance(player, amount).join();
         } catch (Exception e) {
-            plugin.getLogger().warning("Failed to take AxAuctions currency balance: " + exception.getMessage());
+            plugin.getLogger().warning("Failed to take AxAuctions currency balance: " + e.getMessage());
             return false;
         }
     }
@@ -62,16 +62,14 @@ public class CurrencyManager {
         try {
             return hook != null && hook.giveBalance(player, amount).join();
         } catch (Exception exception) {
-            plugin.getLogger().warning("Failed to give AxAuctions currency balance: " + exception.getMessage());
+            plugin.getLogger().warning("Failed to give AxAuctions currency balance: " + e.getMessage());
             return false;
         }
     }
 
     public String format(double amount) {
-        String currency = hook == null)
-            ? plugin.getConfig().getString("currency", "money") : hook.getName();
-            ? hook.getName();
-        
-        return FORMAT.format(amount) + " " + currency;
-    }
+    String currency = hook == null
+        ? plugin.getConfig().getString("currency", "money")
+        : hook.getName();
+    return FORMAT.format(amount) + " " + currency;
 }
