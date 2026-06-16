@@ -1,0 +1,22 @@
+currency: "vault"
+max-orders-per-player: 5
+gui-title: "&6&lBuy Orders"
+custom-item-identity-keys:
+  - "axorders:custom_item_id"
+  - "axordersaddon:custom_item_id"
+  - "pyrofishing:pyro_item"
+
+messages:
+  no-permission: "&cYou do not have permission."
+  player-only: "&cOnly players can use this command."
+  unknown-material: "&cUnknown material: &e{material}"
+  invalid-amount: "&cInvalid amount."
+  invalid-price: "&cInvalid price."
+  order-created: "&aBuy order placed for &e{amount}x {material} &aat &e{price} &aeach."
+  order-filled: "&aFilled &e{amount}x {material} &afor &e{payment}&a."
+  order-cancelled: "&aOrder cancelled."
+  order-not-found: "&cOrder not found."
+  no-currency-hook: "&cNo AxAuctions currency hook is available. Check the currency setting."
+  not-enough-money: "&cYou need &e{amount} &cto create that order."
+  own-order: "&cYou cannot fill your own order."
+  no-items: "&cYou do not have any &e{material}&c."
