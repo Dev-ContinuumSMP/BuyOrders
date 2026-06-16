@@ -7,6 +7,7 @@ import com.example.axorders.listener.PlayerJoinListener;
 import com.example.axorders.manager.CurrencyManager;
 import com.example.axorders.manager.OrderManager;
 import org.bukkit.ChatColor;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class AxOrdersAddon extends JavaPlugin {
@@ -22,7 +23,7 @@ public class AxOrdersAddon extends JavaPlugin {
         currencyManager.init();
         
         if (currencyManager.getHook() == null) {
-            getLogger().warning("No economy hook found! Disabling currency features.");
+            getLogger().warning("No AxAuctions currency hook found yet. The addon will retry when currency is needed.");
         }
         
         orderManager = new OrderManager(this);
