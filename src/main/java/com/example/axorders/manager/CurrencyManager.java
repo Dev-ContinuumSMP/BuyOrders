@@ -11,48 +11,54 @@ import java.util.UUID;
 public class CurrencyManager {
 
     private static final DecimalFormat FORMAT = new DecimalFormat("#,##0.##");
-
+    
     private final AxOrdersAddon plugin;
+    private CurrencyHook hook;
 
     public CurrencyManager(AxOrdersAddon plugin) {
         this.plugin = plugin;
     }
 
-    public CurrencyHook getHook() {
+    public void reload() {
         Map<String, CurrencyHook> registry = AxAuctionsAPI.getRegistry();
         String configured = plugin.getConfig().getString("currency", "vault");
-
-        CurrencyHook hook = registry.get(configured);
-        if (hook != null) return hook;
-
-        for (Map.Entry<String, CurrencyHook> entry : registry.entrySet()) {
-            if (entry.getKey().equalsIgnoreCase(configured)) return entry.getValue();
+    
+        CurrencyHook found = registry.get(configured);
+    
+        if (found == null) {
+            for (Map.Entry<String, CurrencyHook> entry : registry.entrySet()) {
+                if (entry.getKey().equalsIgnoreCase(configured)) {
+                    found = entry.getValue();
+                    break;
+                }
+            }
         }
-        return registry.values().stream().findFirst().orElse(null);
+    
+        if (found == null && !registry.isEmpty()) {
+            found = registry.values().iterator().next();
+        }
+    
+        this.hook = found;
     }
 
     public boolean has(UUID player, double amount) {
-        CurrencyHook hook = getHook();
         try {
             return hook != null && hook.getBalance(player) >= amount;
-        } catch (Exception exception) {
-            plugin.getLogger().warning("Failed to check AxAuctions currency balance: " + exception.getMessage());
+        } catch (Exception e) {
+            plugin.getLogger().warning("Currency check failed: " + e.getMessage());
             return false;
         }
     }
-
     public boolean take(UUID player, double amount) {
-        CurrencyHook hook = getHook();
         try {
             return hook != null && hook.takeBalance(player, amount).join();
-        } catch (Exception exception) {
+        } catch (Exception e) {
             plugin.getLogger().warning("Failed to take AxAuctions currency balance: " + exception.getMessage());
             return false;
         }
     }
 
     public boolean give(UUID player, double amount) {
-        CurrencyHook hook = getHook();
         try {
             return hook != null && hook.giveBalance(player, amount).join();
         } catch (Exception exception) {
@@ -62,8 +68,10 @@ public class CurrencyManager {
     }
 
     public String format(double amount) {
-        CurrencyHook hook = getHook();
-        String currency = hook == null ? plugin.getConfig().getString("currency", "money") : hook.getName();
+        String currency = hook == null)
+            ? plugin.getConfig().getString("currency", "money") : hook.getName();
+            ? hook.getName();
+        
         return FORMAT.format(amount) + " " + currency;
     }
 }
