@@ -3,6 +3,7 @@ package com.example.axorders.gui;
 import com.example.axorders.AxOrdersAddon;
 import com.example.axorders.manager.OrderManager;
 import com.example.axorders.model.BuyOrder;
+import com.example.axorders.util.ItemMatcher;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
