@@ -85,4 +85,3 @@ public class OrdersCommand implements CommandExecutor, TabCompleter {
         return completions;
     }
 }
-
