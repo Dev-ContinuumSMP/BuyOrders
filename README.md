@@ -3,7 +3,7 @@
 <img width="2560" height="1369" alt="Minecraft_ 1 21 11 - Multiplayer (3rd-party Server) 15_06_2026 7_05_15 pm" src="https://github.com/user-attachments/assets/28000171-184b-446b-b9ef-c5b5774f0472" />
 ## BuyOrders
 
-**ABuyOrders** adds a simple, polished buy-orders system to **AxAuctions**.
+**BuyOrders** adds a simple, polished buy-orders system to **AxAuctions**.
 
 Players can create buy orders for vanilla items or custom items, deposit the payment up front, and let other players fill those orders through a clean in-game GUI. It is built for servers that want a player-driven market where demand matters just as much as selling.
 
