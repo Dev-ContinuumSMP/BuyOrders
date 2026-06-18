@@ -1,6 +1,6 @@
 name: BuyOrders
 version: 1.1.0
-main: com.example.axorders.AxOrdersAddon
+main: com.example.buyorders.BuyOrders
 api-version: '1.21'
 folia-supported: true
 description: Standalone buy orders plugin
