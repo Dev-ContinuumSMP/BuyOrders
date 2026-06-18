@@ -46,3 +46,4 @@ public class BuyOrder {
         return id.toString().replace("-", "").substring(0, 6);
     }
 }
+
