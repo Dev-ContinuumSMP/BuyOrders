@@ -18,12 +18,9 @@ public class AxOrdersAddon extends JavaPlugin {
     @Override
     public void onEnable() {
         saveDefaultConfig();
+
         currencyManager = new CurrencyManager(this);
         currencyManager.init();
-        
-        if (currencyManager.getHook() == null) {
-            getLogger().warning("No AxAuctions currency hook found yet. The addon will retry when currency is needed.");
-        }
         
         orderManager = new OrderManager(this);
         orderManager.load();
@@ -48,7 +45,7 @@ public class AxOrdersAddon extends JavaPlugin {
             cmd.setTabCompleter(buyOrderCommand);
         }
         
-        getLogger().info("AxOrdersAddon enabled.");
+        getLogger().info("BuyOrders enabled.");
     }
 
     private void register(Listener listener) {
@@ -57,7 +54,10 @@ public class AxOrdersAddon extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        if (orderManager != null) orderManager.save();
+        if (orderManager != null) {
+            orderManager.save();
+            orderManager.close();
+        }
     }
 
     public OrderManager getOrderManager() {
