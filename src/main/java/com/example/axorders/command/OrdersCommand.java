@@ -25,7 +25,18 @@ public class OrdersCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        
+        if (args.length > 0 && args[0].equalsIgnoreCase("reload")) {
+            if (!sender.hasPermission("axorders.admin")) {
+                sender.sendMessage(plugin.msg("no-permission"));
+                return true;
+            }
+
+            plugin.reloadConfig();
+            plugin.getCurrencyManager().reload();
+            sender.sendMessage(plugin.msg("reloaded"));
+            return true;
+        }
+
         if (!(sender instanceof Player player)) {
             sender.sendMessage(plugin.msg("player-only"));
             return true;
@@ -60,11 +71,18 @@ public class OrdersCommand implements CommandExecutor, TabCompleter {
     
         String typed = args[0].toLowerCase();
     
-        return Arrays.stream(Material.values())
+        List<String> completions = Arrays.stream(Material.values())
                 .filter(Material::isItem)
                 .map(m -> m.name().toLowerCase())
                 .filter(name -> name.startsWith(typed))
                 .limit(30)
                 .collect(Collectors.toList());
+
+        if (sender.hasPermission("axorders.admin") && "reload".startsWith(typed)) {
+            completions.add(0, "reload");
+        }
+
+        return completions;
     }
 }
+
