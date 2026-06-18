@@ -18,7 +18,6 @@ public class AxOrdersAddon extends JavaPlugin {
     @Override
     public void onEnable() {
         saveDefaultConfig();
-
         currencyManager = new CurrencyManager(this);
         currencyManager.init();
         
