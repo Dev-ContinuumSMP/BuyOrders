@@ -106,8 +106,8 @@ public class OrdersGUI implements InventoryHolder {
         item.setItemMeta(meta);
 
         int available = countMatchingItems(order.getItemTemplate());
-        int fillAmount = Math.min(available, order.getRemaining());
-        double payout = fillAmount * order.getPriceEach();
+        int maxFillAmount = Math.min(available, order.getRemaining());
+        double payout = maxFillAmount * order.getPriceEach();
 
         List<String> lore = colorLines(applyOrderPlaceholders(
                 plugin.getConfig().getStringList("gui.order-item.lore"),
@@ -123,13 +123,13 @@ public class OrdersGUI implements InventoryHolder {
                     available,
                     payout
             )));
-        } else if (fillAmount > 0) {
+        } else if (maxFillAmount > 0) {
             lore.addAll(colorLines(applyOrderPlaceholders(
                     plugin.getConfig().getStringList("gui.order-item.actions.can-fill"),
                     order,
                     available,
                     payout
-            ).stream().map(line -> line.replace("{fill_amount}", String.valueOf(fillAmount))).toList()));
+            ).stream().map(line -> line.replace("{fill_amount}", String.valueOf(maxFillAmount))).toList()));
         } else {
             lore.addAll(colorLines(applyOrderPlaceholders(
                     plugin.getConfig().getStringList("gui.order-item.actions.no-items"),
@@ -184,15 +184,18 @@ public class OrdersGUI implements InventoryHolder {
     }
 
     private ItemStack makeConfiguredItem(String path, Map<String, String> placeholders) {
-        Material material = Material.matchMaterial(configString(path + ".material", "STONE"));
+        Material material = Material.matchMaterial(configString(path + ".material", defaultControlMaterial(path)));
         if (material == null || material.isAir()) material = Material.STONE;
         int amount = Math.max(1, Math.min(64, plugin.getConfig().getInt(path + ".amount", 1)));
         ItemStack item = new ItemStack(material, amount);
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return item;
 
-        meta.setDisplayName(color(applyPlaceholders(configString(path + ".name", " "), placeholders)));
-        meta.setLore(colorLines(applyPlaceholders(plugin.getConfig().getStringList(path + ".lore"), placeholders)));
+        meta.setDisplayName(color(applyPlaceholders(configString(path + ".name", defaultControlName(path)), placeholders)));
+
+        List<String> lore = plugin.getConfig().getStringList(path + ".lore");
+        if (lore.isEmpty()) lore = defaultControlLore(path);
+        meta.setLore(colorLines(applyPlaceholders(lore, placeholders)));
 
         if (plugin.getConfig().isSet(path + ".custom-model-data")) {
             meta.setCustomModelData(plugin.getConfig().getInt(path + ".custom-model-data"));
@@ -200,6 +203,18 @@ public class OrdersGUI implements InventoryHolder {
 
         item.setItemMeta(meta);
         return item;
+    }
+
+    private String defaultControlMaterial(String path) {
+        return "STONE";
+    }
+
+    private String defaultControlName(String path) {
+        return " ";
+    }
+
+    private List<String> defaultControlLore(String path) {
+        return List.of();
     }
 
     private String sortLabel() {
@@ -317,6 +332,8 @@ public class OrdersGUI implements InventoryHolder {
                 .replace("{filled}", String.valueOf(order.getQuantityFilled()))
                 .replace("{price_each}", plugin.getCurrencyManager().format(order.getPriceEach()))
                 .replace("{your_items}", String.valueOf(available))
+                .replace("{max_fill_amount}", String.valueOf(Math.min(available, order.getRemaining())))
+                .replace("{max_payout}", plugin.getCurrencyManager().format(Math.min(available, order.getRemaining()) * order.getPriceEach()))
                 .replace("{payout}", plugin.getCurrencyManager().format(payout));
     }
 
