@@ -37,7 +37,7 @@ public class BuyOrderCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        if (plugin.getCurrencyManager().getHook() == null) {
+        if (!plugin.getCurrencyManager().isAvailable()) {
             player.sendMessage(plugin.msg("no-currency-hook"));
             return true;
         }   
