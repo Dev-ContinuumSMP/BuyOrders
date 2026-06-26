@@ -1,5 +1,6 @@
-<img width="1254" height="1254" alt="icon" src="https://github.com/user-attachments/assets/2af5d54a-1dc3-4cb3-89a3-ad7bd8ff82ed" />
 # AGAuctions
+
+![AGAuctions Logo](./docs/images/logo.png)
 
 A polished auction house and buy-order marketplace plugin for Paper and Folia servers.
 
@@ -51,43 +52,43 @@ mvnw.cmd clean package
 
 | Auction House Overview | Statistics |
 |---|---|
-| ![Auction House Overview](docs/images/ah-overview.png) | ![Auction House Statistics](docs/images/ah-statistics.png) |
+| ![Auction House Overview](./docs/images/ah-overview.png) | ![Auction House Statistics](./docs/images/ah-statistics.png) |
 
 | Filter Controls | Search Control |
 |---|---|
-| ![Auction House Filter](docs/images/ah-filter.png) | ![Auction House Search](docs/images/ah-search.png) |
+| ![Auction House Filter](./docs/images/ah-filter.png) | ![Auction House Search](./docs/images/ah-search.png) |
 
 | Claims Button | Close Button |
 |---|---|
-| ![Auction House Claims](docs/images/ah-claims.png) | ![Auction House Close](docs/images/ah-close.png) |
+| ![Auction House Claims](./docs/images/ah-claims.png) | ![Auction House Close](./docs/images/ah-close.png) |
 
 | Page Switch |
 |---|
-| ![Auction House Page Switch](docs/images/ah-page-switch.png) |
+| ![Auction House Page Switch](./docs/images/ah-page-switch.png) |
 
 ### Orders
 
 | Orders Overview | Collection Shortcut |
 |---|---|
-| ![Orders Overview](docs/images/orders-overview.png) | ![Orders Collection Shortcut](docs/images/orders-filter.png) |
+| ![Orders Overview](./docs/images/orders-overview.png) | ![Orders Collection Shortcut](./docs/images/orders-filter.png) |
 
 | Search | Refresh |
 |---|---|
-| ![Orders Search](docs/images/orders-search.png) | ![Orders Refresh](docs/images/orders-refresh.png) |
+| ![Orders Search](./docs/images/orders-search.png) | ![Orders Refresh](./docs/images/orders-refresh.png) |
 
 | Close | Page Switch |
 |---|---|
-| ![Orders Close](docs/images/orders-close.png) | ![Orders Page Switch](docs/images/orders-page-switch.png) |
+| ![Orders Close](./docs/images/orders-close.png) | ![Orders Page Switch](./docs/images/orders-page-switch.png) |
 
 ### Collection
 
 | Collection Overview | Claim All |
 |---|---|
-| ![Collection Overview](docs/images/collection-overview.png) | ![Collection Claim All](docs/images/collection-claim-all.png) |
+| ![Collection Overview](./docs/images/collection-overview.png) | ![Collection Claim All](./docs/images/collection-claim-all.png) |
 
 | Waiting Count | Back To Orders |
 |---|---|
-| ![Collection Waiting Count](docs/images/collection-waiting.png) | ![Collection Back To Orders](docs/images/collection-back-to-orders.png) |
+| ![Collection Waiting Count](./docs/images/collection-waiting.png) | ![Collection Back To Orders](./docs/images/collection-back-to-orders.png) |
 
 ## Commands
 
