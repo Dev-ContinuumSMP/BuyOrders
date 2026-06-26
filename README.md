@@ -1,3 +1,4 @@
+<img width="1254" height="1254" alt="icon" src="https://github.com/user-attachments/assets/2af5d54a-1dc3-4cb3-89a3-ad7bd8ff82ed" />
 # AGAuctions
 
 A polished auction house and buy-order marketplace plugin for Paper and Folia servers.
