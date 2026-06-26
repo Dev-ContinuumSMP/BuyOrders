@@ -61,8 +61,12 @@ mvnw.cmd clean package
 
 | Command | Description |
 |---|---|
-| `/ah orders [material|claim]` | Open buy orders from AH flow |
-| `/ah buyorder <material> <amount> <priceEach>` | Create a buy order from AH flow |
+| `/ah orders [material|collect|claim]` | Open buy orders from AH flow |
+| `/ah order [material|collect|claim]` | Alias of `/ah orders` |
+| `/ah buyorder <material> <amount> <priceEach>` | Create a material buy order from AH flow |
+| `/ah buyorder hand <amount> <priceEach>` | Create a buy order for the held item from AH flow |
+| `/ah buyorders <material> <amount> <priceEach>` | Alias of `/ah buyorder` for a cleaner AH command flow |
+| `/ah buyorders hand <amount> <priceEach>` | Alias of `/ah buyorder hand` |
 | `/buyorder <material> <amount> <priceEach>` | Legacy create command |
 | `/buyorder hand <amount> <priceEach>` | Create a buy order for the held item |
 | `/orders [material|collect|claim|reload]` | Legacy orders path |
