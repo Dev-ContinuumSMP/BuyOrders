@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.example</groupId>
-    <artifactId>BuyOrders</artifactId>
-    <version>1.1.0</version>
+    <artifactId>AGAuctions</artifactId>
+    <version>1.0</version>
     <packaging>jar</packaging>
 
-    <name>BuyOrders</name>
-    <description>Standalone buy orders plugin</description>
+    <name>AGAuctions</name>
+    <description>AGAuctions</description>
 
     <properties>
         <java.version>21</java.version>
