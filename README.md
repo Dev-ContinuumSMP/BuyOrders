@@ -1,6 +1,4 @@
 # AGAuctions
-
-<img width="352" height="440" alt="2026-06-26_04 11 02" src="https://github.com/user-attachments/assets/7d5e55ea-45e1-4915-af36-46b3cbe95a06" />
 <img width="1254" height="1254" alt="icon" src="https://github.com/user-attachments/assets/58775568-9023-4c85-ad71-a354ec4f7948" />
 
 
