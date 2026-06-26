@@ -81,7 +81,7 @@ goto error
 
 :init
 
-@REM Find the project base dir, i.e. the directory that contains the folder ".mvn".
+@REM Find the project base dir, i.e. the directory that contains the folder "mvn".
 @REM Fallback to current working directory if not found.
 
 set MAVEN_PROJECTBASEDIR=%MAVEN_BASEDIR%
@@ -90,7 +90,7 @@ IF NOT "%MAVEN_PROJECTBASEDIR%"=="" goto endDetectBaseDir
 set EXEC_DIR=%CD%
 set WDIR=%EXEC_DIR%
 :findBaseDir
-IF EXIST "%WDIR%"\.mvn goto baseDirFound
+IF EXIST "%WDIR%"\mvn goto baseDirFound
 cd ..
 IF "%WDIR%"=="%CD%" goto baseDirNotFound
 set WDIR=%CD%
@@ -107,21 +107,21 @@ cd "%EXEC_DIR%"
 
 :endDetectBaseDir
 
-IF NOT EXIST "%MAVEN_PROJECTBASEDIR%\.mvn\jvm.config" goto endReadAdditionalConfig
+IF NOT EXIST "%MAVEN_PROJECTBASEDIR%\mvn\jvm.config" goto endReadAdditionalConfig
 
 @setlocal EnableExtensions EnableDelayedExpansion
-for /F "usebackq delims=" %%a in ("%MAVEN_PROJECTBASEDIR%\.mvn\jvm.config") do set JVM_CONFIG_MAVEN_PROPS=!JVM_CONFIG_MAVEN_PROPS! %%a
+for /F "usebackq delims=" %%a in ("%MAVEN_PROJECTBASEDIR%\mvn\jvm.config") do set JVM_CONFIG_MAVEN_PROPS=!JVM_CONFIG_MAVEN_PROPS! %%a
 @endlocal & set JVM_CONFIG_MAVEN_PROPS=%JVM_CONFIG_MAVEN_PROPS%
 
 :endReadAdditionalConfig
 
 SET MAVEN_JAVA_EXE="%JAVA_HOME%\bin\java.exe"
-set WRAPPER_JAR="%MAVEN_PROJECTBASEDIR%\.mvn\wrapper\maven-wrapper.jar"
+set WRAPPER_JAR="%MAVEN_PROJECTBASEDIR%\mvn\wrapper\maven-wrapper.jar"
 set WRAPPER_LAUNCHER=org.apache.maven.wrapper.MavenWrapperMain
 
 set WRAPPER_URL="https://repo.maven.apache.org/maven2/org/apache/maven/wrapper/maven-wrapper/3.3.2/maven-wrapper-3.3.2.jar"
 
-FOR /F "usebackq tokens=1,2 delims==" %%A IN ("%MAVEN_PROJECTBASEDIR%\.mvn\wrapper\maven-wrapper.properties") DO (
+FOR /F "usebackq tokens=1,2 delims==" %%A IN ("%MAVEN_PROJECTBASEDIR%\mvn\wrapper\maven-wrapper.properties") DO (
     IF "%%A"=="wrapperUrl" SET WRAPPER_URL=%%B
 )
 
@@ -155,7 +155,7 @@ if exist %WRAPPER_JAR% (
 
 @REM If specified, validate the SHA-256 sum of the Maven wrapper jar file
 SET WRAPPER_SHA_256_SUM=""
-FOR /F "usebackq tokens=1,2 delims==" %%A IN ("%MAVEN_PROJECTBASEDIR%\.mvn\wrapper\maven-wrapper.properties") DO (
+FOR /F "usebackq tokens=1,2 delims==" %%A IN ("%MAVEN_PROJECTBASEDIR%\mvn\wrapper\maven-wrapper.properties") DO (
     IF "%%A"=="wrapperSha256Sum" SET WRAPPER_SHA_256_SUM=%%B
 )
 IF NOT %WRAPPER_SHA_256_SUM%=="" (
