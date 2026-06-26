@@ -1,6 +1,8 @@
 # AGAuctions
 
-![AGAuctions Logo](./docs/images/logo.png)
+<img width="352" height="440" alt="2026-06-26_04 11 02" src="https://github.com/user-attachments/assets/7d5e55ea-45e1-4915-af36-46b3cbe95a06" />
+<img width="1254" height="1254" alt="icon" src="https://github.com/user-attachments/assets/58775568-9023-4c85-ad71-a354ec4f7948" />
+
 
 A polished auction house and buy-order marketplace plugin for Paper and Folia servers.
 
@@ -52,7 +54,8 @@ mvnw.cmd clean package
 
 | Auction House Overview | Statistics |
 |---|---|
-| ![Auction House Overview](./docs/images/ah-overview.png) | ![Auction House Statistics](./docs/images/ah-statistics.png) |
+| <img width="352" height="440" alt="2026-06-26_04 11 02" src="https://github.com/user-attachments/assets/944696e9-9064-4a4f-b091-9086cf29d0be" />
+
 
 | Filter Controls | Search Control |
 |---|---|
